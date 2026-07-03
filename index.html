@@ -1,0 +1,726 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Respostas Google · Grupo Barreto</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bordo:#AF2846;
+    --bordo-escuro:#8C1F38;
+    --bordo-claro:#FDF2F5;
+    --ink:#2B2530;
+    --ink-soft:#6E6575;
+    --line:#E9E2E6;
+    --bg:#FAF8F9;
+    --card:#FFFFFF;
+    --ok:#1E7A4C;
+    --warn:#B7791F;
+    --neg:#B3362B;
+    --radius:14px;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{
+    font-family:'Montserrat',sans-serif;
+    background:var(--bg);
+    color:var(--ink);
+    min-height:100vh;
+    -webkit-font-smoothing:antialiased;
+  }
+  .wrap{max-width:820px;margin:0 auto;padding:28px 18px 64px}
+
+  header{margin-bottom:22px}
+  .eyebrow{
+    font-size:11px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;
+    color:var(--bordo);margin-bottom:6px;
+  }
+  h1{font-size:26px;font-weight:800;letter-spacing:-.01em}
+  .sub{font-size:13.5px;color:var(--ink-soft);margin-top:6px;line-height:1.5}
+
+  .tabs{
+    display:flex;gap:8px;margin:22px 0 18px;
+    overflow-x:auto;-webkit-overflow-scrolling:touch;padding-bottom:2px;
+  }
+  .tab{
+    flex:1;min-width:130px;
+    border:1.5px solid var(--line);
+    background:var(--card);
+    border-radius:var(--radius);
+    padding:12px 14px;
+    cursor:pointer;
+    font-family:inherit;
+    text-align:left;
+    transition:border-color .15s,background .15s;
+  }
+  .tab .t-name{font-size:14px;font-weight:700;color:var(--ink)}
+  .tab .t-kind{font-size:11px;font-weight:500;color:var(--ink-soft);margin-top:2px}
+  .tab.active{border-color:var(--bordo);background:var(--bordo-claro)}
+  .tab.active .t-name{color:var(--bordo)}
+  .tab:focus-visible{outline:2px solid var(--bordo);outline-offset:2px}
+
+  .brand-info{
+    font-size:12px;color:var(--ink-soft);
+    background:var(--card);border:1px solid var(--line);
+    border-radius:10px;padding:10px 14px;margin-bottom:18px;
+    line-height:1.6;word-break:break-word;
+  }
+  .brand-info strong{color:var(--ink);font-weight:600}
+
+  .panel{
+    background:var(--card);border:1px solid var(--line);
+    border-radius:var(--radius);padding:20px;
+  }
+  label{display:block;font-size:12px;font-weight:700;letter-spacing:.04em;
+    text-transform:uppercase;color:var(--ink-soft);margin-bottom:7px}
+  textarea,input[type=text]{
+    width:100%;font-family:inherit;font-size:14.5px;color:var(--ink);
+    border:1.5px solid var(--line);border-radius:10px;
+    padding:12px 14px;background:#fff;
+    transition:border-color .15s;
+  }
+  textarea{min-height:130px;resize:vertical;line-height:1.55}
+  textarea:focus,input:focus{outline:none;border-color:var(--bordo)}
+  .row{display:flex;gap:12px;margin-top:14px;flex-wrap:wrap}
+  .row>div{flex:1;min-width:200px}
+
+  .btn{
+    margin-top:18px;width:100%;
+    background:var(--bordo);color:#fff;border:none;
+    font-family:inherit;font-size:15px;font-weight:700;
+    padding:15px;border-radius:10px;cursor:pointer;
+    transition:background .15s;
+  }
+  .btn:hover{background:var(--bordo-escuro)}
+  .btn:disabled{opacity:.55;cursor:wait}
+  .btn:focus-visible{outline:2px solid var(--bordo-escuro);outline-offset:2px}
+
+  .sentiment{
+    display:none;margin-top:22px;
+    font-size:12px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;
+    padding:6px 12px;border-radius:999px;
+  }
+  .sentiment.show{display:inline-block}
+  .sentiment.positivo{background:#E8F5EE;color:var(--ok)}
+  .sentiment.neutro{background:#FBF3E4;color:var(--warn)}
+  .sentiment.negativo{background:#FBEAE8;color:var(--neg)}
+
+  .neg-note{
+    display:none;margin-top:12px;font-size:13px;line-height:1.6;
+    background:#FBEAE8;color:#7A241C;border-radius:10px;padding:12px 14px;
+  }
+  .neg-note.show{display:block}
+
+  .cards{margin-top:16px;display:flex;flex-direction:column;gap:14px}
+  .card{
+    background:var(--card);border:1px solid var(--line);
+    border-radius:var(--radius);padding:18px;position:relative;
+  }
+  .card-head{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:10px}
+  .tone{
+    font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;
+    color:var(--bordo);
+  }
+  .copy{
+    font-family:inherit;font-size:12px;font-weight:600;
+    background:var(--bordo-claro);color:var(--bordo);
+    border:1px solid transparent;border-radius:8px;
+    padding:7px 14px;cursor:pointer;transition:background .15s;
+    white-space:nowrap;
+  }
+  .copy:hover{background:#F7DDE4}
+  .copy.done{background:#E8F5EE;color:var(--ok)}
+  .card p{font-size:14.5px;line-height:1.65;white-space:pre-wrap}
+  .card textarea.edit-area{
+    width:100%;font-family:inherit;font-size:14.5px;line-height:1.65;
+    color:var(--ink);border:1.5px solid var(--bordo);border-radius:10px;
+    padding:12px 14px;background:#FFFBFC;min-height:120px;resize:vertical;
+    display:none;
+  }
+  .edit-toggle{
+    font-family:inherit;font-size:12px;font-weight:600;
+    background:transparent;color:var(--ink-soft);
+    border:1px solid var(--line);border-radius:8px;
+    padding:7px 14px;cursor:pointer;transition:background .15s;
+    white-space:nowrap;
+  }
+  .edit-toggle:hover{background:var(--bg)}
+
+  .err{
+    display:none;margin-top:18px;font-size:13.5px;line-height:1.6;
+    background:#FBEAE8;color:#7A241C;border-radius:10px;padding:14px;
+  }
+  .err.show{display:block}
+
+  .method-note{
+    margin-top:22px;font-size:11.5px;color:var(--ink-soft);
+    text-align:center;line-height:1.6;
+  }
+
+  footer{margin-top:28px;font-size:11.5px;color:var(--ink-soft);text-align:center}
+
+  @media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header>
+    <div class="eyebrow">Grupo Barreto · Ferramenta interna</div>
+    <h1>Respostas para avaliações do Google</h1>
+    <p class="sub">Cole a avaliação do cliente, escolha a empresa e receba 3 sugestões de resposta. Funciona 100% offline, sem depender de API externa. Edite qualquer sugestão antes de copiar.</p>
+  </header>
+
+  <div class="tabs" role="tablist" aria-label="Empresa">
+    <button class="tab active" role="tab" aria-selected="true" data-brand="imoveis">
+      <div class="t-name">Barreto Imóveis</div>
+      <div class="t-kind">Imobiliária</div>
+    </button>
+    <button class="tab" role="tab" aria-selected="false" data-brand="seguros">
+      <div class="t-name">Barreto Seguros</div>
+      <div class="t-kind">Corretora de seguros</div>
+    </button>
+    <button class="tab" role="tab" aria-selected="false" data-brand="garden">
+      <div class="t-name">Garden Café</div>
+      <div class="t-kind">Restaurante</div>
+    </button>
+  </div>
+
+  <div class="brand-info" id="brandInfo"></div>
+
+  <div class="panel">
+    <label for="review">Avaliação do cliente</label>
+    <textarea id="review" placeholder="Cole aqui o texto da avaliação recebida no Google..."></textarea>
+
+    <div class="row">
+      <div>
+        <label for="reviewer">Nome do avaliador (opcional)</label>
+        <input type="text" id="reviewer" placeholder="Ex.: Maria S.">
+      </div>
+      <div>
+        <label for="stars">Nota em estrelas</label>
+        <input type="text" id="stars" placeholder="Ex.: 5 ou 1" inputmode="numeric">
+      </div>
+    </div>
+
+    <button class="btn" id="go">Gerar 3 sugestões de resposta</button>
+  </div>
+
+  <span class="sentiment" id="sentiment"></span>
+  <div class="neg-note" id="negNote">Avaliação identificada como negativa: as sugestões abaixo priorizam empatia, evitam repetir o problema publicamente e convidam o cliente para contato direto.</div>
+  <div class="cards" id="cards"></div>
+  <div class="err" id="err"></div>
+
+  <p class="method-note">As respostas são geradas por templates inteligentes em JavaScript — sem envio de dados para servidores externos.</p>
+
+  <footer>Grupo Barreto · uso interno · as respostas são sugestões — revise antes de publicar</footer>
+</div>
+
+<script>
+(function(){
+"use strict";
+
+/* ============================
+   DADOS DAS MARCAS
+   ============================ */
+var BRANDS = {
+  imoveis: {
+    nome: "Barreto Imóveis",
+    tipo: "imobiliária",
+    area: "locação e administração de imóveis",
+    instagram: "@imoveisbarreto",
+    instagramUrl: "https://www.instagram.com/imoveisbarreto/",
+    site: "barretojundiai.com.br",
+    siteUrl: "https://barretojundiai.com.br/",
+    cta: "Acompanhe nossas novidades no Instagram @imoveisbarreto e no site barretojundiai.com.br",
+    ctaNeg: "Entre em contato pelo nosso site barretojundiai.com.br para que possamos resolver essa situação"
+  },
+  seguros: {
+    nome: "Barreto Seguros",
+    tipo: "corretora de seguros",
+    area: "seguros e proteção patrimonial",
+    instagram: "@barreto.seguros",
+    instagramUrl: "https://www.instagram.com/barreto.seguros/",
+    site: "barretosegurosjundiai.com.br",
+    siteUrl: "https://barretosegurosjundiai.com.br/",
+    cta: "Siga a gente no Instagram @barreto.seguros e conheça mais em barretosegurosjundiai.com.br",
+    ctaNeg: "Por favor, entre em contato pelo barretosegurosjundiai.com.br para que possamos entender e resolver a situação"
+  },
+  garden: {
+    nome: "Garden Café",
+    tipo: "restaurante",
+    area: "gastronomia",
+    instagram: "@gardenjundiai",
+    instagramUrl: "https://www.instagram.com/gardenjundiai/",
+    site: "gardenjundiai.com.br",
+    siteUrl: "https://gardenjundiai.com.br/",
+    cta: "Acompanhe as novidades no nosso Instagram @gardenjundiai e no site gardenjundiai.com.br",
+    ctaNeg: "Entre em contato pelo gardenjundiai.com.br para conversarmos diretamente sobre o ocorrido"
+  }
+};
+
+/* ============================
+   DETECÇÃO DE TEMAS/KEYWORDS
+   ============================ */
+var TOPIC_RULES = {
+  imoveis: [
+    { id:"atendimento",  words:["atendimento","atendeu","atenderam","atenciosos","atenciosa","educados","educado","simpáticos","simpática","cordiais","cordial","prestativos","prestativa","gentil","gentis","receptiv"] },
+    { id:"agilidade",    words:["rápido","rápida","ágil","agilidade","eficiente","eficiência","prazo","prazos","veloz","pontual","pontualidade"] },
+    { id:"profissional", words:["profissional","profissionais","profissionalismo","competente","competência","capacitados","qualificados","preparados"] },
+    { id:"imovel",       words:["imóvel","imóveis","casa","apartamento","apto","kitnet","sala","loja","galpão","terreno","condomínio"] },
+    { id:"locacao",      words:["locação","aluguel","alugar","alugou","inquilino","proprietário","contrato","vistoria","chave","mudança"] },
+    { id:"confianca",    words:["confiança","confio","confiável","segurança","seguro","honesto","honestidade","transparente","transparência","indicar","indico","recomendo","recomendação"] },
+    { id:"problema",     words:["problema","demora","demorou","lento","descaso","falta","péssimo","péssima","horrível","ruim","insatisfeito","insatisfeita","decepcion","frustr","reclamação","reclamar","descuido"] },
+    { id:"manutencao",   words:["manutenção","reparo","conserto","vazamento","infiltração","esgoto","elétric","hidráulic","pintura","reforma"] }
+  ],
+  seguros: [
+    { id:"atendimento",  words:["atendimento","atendeu","atenderam","atenciosos","atenciosa","educados","simpáticos","simpática","cordial","gentil","prestativos"] },
+    { id:"agilidade",    words:["rápido","rápida","ágil","agilidade","eficiente","prazo","veloz","pontual"] },
+    { id:"profissional", words:["profissional","profissionais","profissionalismo","competente","capacitados","qualificados","experiente"] },
+    { id:"seguro",       words:["seguro","seguros","apólice","cobertura","sinistro","prêmio","franquia","proteção","proteger","resguard"] },
+    { id:"confianca",    words:["confiança","confio","confiável","segurança","honesto","transparente","indicar","indico","recomendo"] },
+    { id:"preco",        words:["preço","valor","barato","econômico","custo","benefício","conta","parcela","pagamento","orçamento","cotação"] },
+    { id:"problema",     words:["problema","demora","demorou","lento","descaso","falta","péssimo","péssima","horrível","ruim","insatisfeito","decepcion","frustr","reclamação","reclamar"] }
+  ],
+  garden: [
+    { id:"comida",       words:["comida","prato","pratos","sabor","saboroso","saborosa","delícia","delicioso","deliciosa","gostoso","gostosa","tempero","menu","cardápio","porção","porções","refeição"] },
+    { id:"cafe",         words:["café","cappuccino","espresso","latte","bebida","bebidas","drink","drinks","suco","sucos","chá"] },
+    { id:"doce",         words:["sobremesa","bolo","torta","doce","doces","brownie","sorvete","waffle","panqueca"] },
+    { id:"ambiente",     words:["ambiente","espaço","lugar","decoração","aconchegante","acolhedor","bonito","bonita","lindo","linda","agradável","confortável","clima","jardim","área externa","varanda"] },
+    { id:"atendimento",  words:["atendimento","atendeu","atenderam","garçom","garçons","garçonete","atenciosos","atenciosa","educados","simpáticos","simpática","cordial","gentil","prestativos"] },
+    { id:"experiencia",  words:["experiência","momento","incrível","maravilhoso","maravilhosa","perfeito","perfeita","especial","impecável","excelente","nota 10","top","sensacional","fantástico"] },
+    { id:"preco",        words:["preço","valor","barato","caro","conta","custo","benefício"] },
+    { id:"demora",       words:["demora","demorou","espera","esperamos","esperando","lento","lenta","demor"] },
+    { id:"problema",     words:["problema","péssimo","péssima","horrível","ruim","insatisfeito","insatisfeita","decepcion","frustr","reclamação","nojento","sujo","suja","frio","gelado","queimado","cru","estragado"] }
+  ]
+};
+
+/* ============================
+   ANÁLISE DE SENTIMENTO
+   ============================ */
+var POSITIVE_WORDS = ["excelente","ótimo","ótima","maravilhos","incrível","perfeito","perfeita","amei","amamos","adorei","adoramos","impecável","sensacional","fantástic","recomendo","indico","parabéns","nota 10","top","surpreend","supero","melhor","obrigad","satisfeit","feliz","contente","encantad","apaixonad","gostei","gostamos","bom","boa","bacana","legal","lindo","linda","bonito","bonita","agradável","acolhedor","aconchegante","delicioso","deliciosa","gostoso","gostosa","saboroso","saborosa","competente","profissional","eficiente","ágil","rápido","rápida","atenciosos","atenciosa","simpáticos","simpática","dedicad","caprichad","cuidados","queridos","querida"];
+
+var NEGATIVE_WORDS = ["péssimo","péssima","horrível","terrível","ruim","lixo","nojento","nojenta","insatisfeito","insatisfeita","decepcion","frustr","descaso","vergonha","absurdo","absurda","inadmissível","inaceitável","nunca mais","não recomendo","não indico","falta de respeito","desrespeito","grosso","grossa","mal educad","despreparo","incompetent","negligên","abandono","enganar","enganou","enganaç","mentir","mentira","roubo","cobrança indevida","cobrança absurda","demora","demorou","espera","esperando","lento","lenta","sujo","suja","frio","gelado","queimado","cru","estragado","vencido","mofado","insosso","sem sal","sem sabor","sem graça","caro demais","preço absurdo","abusivo","abusiva"];
+
+function detectSentiment(text, starsStr) {
+  var lower = text.toLowerCase();
+  var stars = parseInt(starsStr, 10);
+
+  var posCount = 0;
+  var negCount = 0;
+
+  POSITIVE_WORDS.forEach(function(w) {
+    if (lower.indexOf(w) !== -1) posCount++;
+  });
+  NEGATIVE_WORDS.forEach(function(w) {
+    if (lower.indexOf(w) !== -1) negCount++;
+  });
+
+  /* Nota tem peso forte */
+  if (!isNaN(stars)) {
+    if (stars <= 2) return "negativo";
+    if (stars >= 4 && negCount === 0) return "positivo";
+    if (stars === 3) {
+      if (negCount > posCount) return "negativo";
+      if (posCount > negCount) return "positivo";
+      return "neutro";
+    }
+  }
+
+  if (negCount > 0 && negCount >= posCount) return "negativo";
+  if (posCount > negCount) return "positivo";
+  return "neutro";
+}
+
+function detectTopics(text, brandKey) {
+  var lower = text.toLowerCase();
+  var rules = TOPIC_RULES[brandKey] || [];
+  var found = [];
+  rules.forEach(function(rule) {
+    for (var i = 0; i < rule.words.length; i++) {
+      if (lower.indexOf(rule.words[i]) !== -1) {
+        found.push(rule.id);
+        break;
+      }
+    }
+  });
+  return found;
+}
+
+/* ============================
+   TEMPLATES DE RESPOSTA
+   ============================ */
+function buildResponses(brandKey, sentiment, topics, reviewerName) {
+  var b = BRANDS[brandKey];
+  var nome = reviewerName ? reviewerName.split(" ")[0] : "";
+  var saudacao = nome ? (nome + ", ") : "";
+  var saudacaoFormal = nome ? ("Prezado(a) " + nome + ", ") : "Prezado(a) cliente, ";
+
+  var responses = [];
+
+  if (sentiment === "negativo") {
+    responses = buildNegativeResponses(b, saudacao, saudacaoFormal, topics, brandKey);
+  } else if (sentiment === "neutro") {
+    responses = buildNeutralResponses(b, saudacao, saudacaoFormal, topics, brandKey);
+  } else {
+    responses = buildPositiveResponses(b, saudacao, saudacaoFormal, topics, brandKey);
+  }
+
+  return responses;
+}
+
+/* ---------- POSITIVAS ---------- */
+function buildPositiveResponses(b, saud, saudF, topics, bk) {
+  var topicPhrase = getTopicPhrase(topics, bk, "positivo");
+  var res = [];
+
+  /* Tom 1: Caloroso */
+  res.push({
+    tom: "Caloroso",
+    texto: saud + "que alegria receber esse retorno! " + topicPhrase.caloroso + " Saber que tivemos um impacto positivo na sua experiência nos motiva a continuar evoluindo. " + b.cta + ". Obrigado pela confiança!\n\nEquipe " + b.nome
+  });
+
+  /* Tom 2: Profissional */
+  res.push({
+    tom: "Profissional",
+    texto: saudF + "agradecemos muito pela sua avaliação. " + topicPhrase.profissional + " Trabalhamos constantemente para manter esse padrão de qualidade. " + b.cta + ". Estamos à disposição!\n\nEquipe " + b.nome
+  });
+
+  /* Tom 3: Descontraído */
+  res.push({
+    tom: "Descontraído",
+    texto: saud + "muito obrigado pelo carinho na avaliação! " + topicPhrase.descontraido + " É esse tipo de feedback que dá energia pra gente seguir dando o melhor. " + b.cta + " — sempre tem novidade por lá! Até a próxima!\n\nEquipe " + b.nome
+  });
+
+  return res;
+}
+
+/* ---------- NEUTRAS ---------- */
+function buildNeutralResponses(b, saud, saudF, topics, bk) {
+  var topicPhrase = getTopicPhrase(topics, bk, "neutro");
+  var res = [];
+
+  res.push({
+    tom: "Caloroso",
+    texto: saud + "obrigado por compartilhar sua experiência! " + topicPhrase.caloroso + " Seu feedback é muito valioso e nos ajuda a melhorar sempre. " + b.cta + ". Esperamos te ver novamente!\n\nEquipe " + b.nome
+  });
+
+  res.push({
+    tom: "Profissional",
+    texto: saudF + "agradecemos por avaliar nossos serviços. " + topicPhrase.profissional + " Levamos cada feedback a sério e estamos sempre trabalhando para aprimorar nossa entrega. " + b.cta + ".\n\nEquipe " + b.nome
+  });
+
+  res.push({
+    tom: "Descontraído",
+    texto: saud + "valeu pelo feedback! " + topicPhrase.descontraido + " Cada opinião conta pra gente melhorar. " + b.cta + " — adoraríamos te surpreender na próxima!\n\nEquipe " + b.nome
+  });
+
+  return res;
+}
+
+/* ---------- NEGATIVAS (tratamento cuidadoso) ---------- */
+function buildNegativeResponses(b, saud, saudF, topics, bk) {
+  var res = [];
+
+  /* Tom 1: Empático */
+  res.push({
+    tom: "Empático",
+    texto: saud + "sentimos muito que sua experiência não tenha sido positiva. Entendemos sua frustração e levamos esse tipo de retorno muito a sério. Gostaríamos de entender melhor o que aconteceu para podermos corrigir. " + b.ctaNeg + ". Sua satisfação é muito importante para nós.\n\nEquipe " + b.nome
+  });
+
+  /* Tom 2: Resolutivo */
+  res.push({
+    tom: "Resolutivo",
+    texto: saudF + "agradecemos por relatar o ocorrido. Esse não é o padrão que buscamos oferecer e já estamos analisando internamente o que pode ser melhorado. " + b.ctaNeg + " para que possamos tratar o seu caso com a atenção que ele merece.\n\nEquipe " + b.nome
+  });
+
+  /* Tom 3: Formal-cuidadoso */
+  res.push({
+    tom: "Formal-cuidadoso",
+    texto: saudF + "lamentamos saber que sua experiência ficou abaixo das expectativas. Reconhecemos a importância do seu relato e estamos comprometidos em avaliar o que houve. Pedimos que " + b.ctaNeg.toLowerCase().replace("entre em contato", "entre em contato conosco") + ", para que possamos conversar diretamente e buscar uma solução adequada.\n\nEquipe " + b.nome
+  });
+
+  return res;
+}
+
+/* ---------- FRASES CONTEXTUAIS POR TEMA ---------- */
+function getTopicPhrase(topics, bk, sentiment) {
+  var phrases = { caloroso: "", profissional: "", descontraido: "" };
+
+  if (topics.length === 0) {
+    if (sentiment === "positivo") {
+      phrases.caloroso = "Ficamos felizes em saber que você teve uma boa experiência conosco.";
+      phrases.profissional = "É gratificante saber que atingimos suas expectativas.";
+      phrases.descontraido = "Fico feliz demais que você curtiu!";
+    } else {
+      phrases.caloroso = "Queremos sempre oferecer a melhor experiência possível.";
+      phrases.profissional = "Buscamos constantemente aprimorar nossos serviços.";
+      phrases.descontraido = "A gente tá sempre buscando melhorar!";
+    }
+    return phrases;
+  }
+
+  var t = topics[0];
+
+  var MAP = {
+    /* === IMÓVEIS === */
+    atendimento: {
+      caloroso: "Ficamos muito felizes em saber que nosso atendimento fez a diferença!",
+      profissional: "É gratificante saber que nosso atendimento atendeu às suas expectativas.",
+      descontraido: "Saber que o atendimento agradou é o melhor elogio que a gente pode receber!"
+    },
+    agilidade: {
+      caloroso: "Que bom saber que a agilidade no processo fez diferença pra você!",
+      profissional: "Trabalhamos para que cada etapa seja conduzida com eficiência e transparência.",
+      descontraido: "A gente sabe que tempo é tudo — bom saber que fomos rápidos!"
+    },
+    profissional: {
+      caloroso: "Saber que você reconheceu nosso profissionalismo nos enche de orgulho!",
+      profissional: "O reconhecimento do nosso profissionalismo reflete o comprometimento de toda a equipe.",
+      descontraido: "Profissionalismo é nosso lema — que bom que deu pra sentir isso!"
+    },
+    imovel: {
+      caloroso: "Ficamos felizes que você encontrou o imóvel ideal com a gente!",
+      profissional: "É um prazer contribuir para que nossos clientes encontrem o imóvel adequado às suas necessidades.",
+      descontraido: "Nada melhor do que encontrar o cantinho perfeito, né?"
+    },
+    locacao: {
+      caloroso: "Que bom que o processo de locação foi tranquilo e satisfatório!",
+      profissional: "Nos dedicamos a tornar o processo de locação o mais transparente e eficiente possível.",
+      descontraido: "Processo de locação sem dor de cabeça é o que a gente busca sempre!"
+    },
+    confianca: {
+      caloroso: "Sua confiança em nosso trabalho é o que nos move!",
+      profissional: "A confiança dos nossos clientes é o maior reconhecimento que podemos receber.",
+      descontraido: "Confiança é tudo — e a sua é muito valorizada por aqui!"
+    },
+    manutencao: {
+      caloroso: "Ficamos contentes que a manutenção foi resolvida de forma satisfatória!",
+      profissional: "Nos empenhamos para que questões de manutenção sejam tratadas com agilidade e qualidade.",
+      descontraido: "Resolver manutenção rápido é compromisso nosso!"
+    },
+    /* === SEGUROS === */
+    seguro: {
+      caloroso: "Ficamos felizes em ajudar você a encontrar a proteção ideal!",
+      profissional: "É nosso compromisso oferecer as melhores soluções em seguros para cada perfil de cliente.",
+      descontraido: "Seguro bom é seguro que te deixa tranquilo — que bom que acertamos!"
+    },
+    preco: {
+      caloroso: "Que bom saber que encontramos juntos um ótimo custo-benefício!",
+      profissional: "Trabalhamos para oferecer condições competitivas que atendam às expectativas dos nossos clientes.",
+      descontraido: "Preço justo e qualidade — essa é a combinação que a gente busca!"
+    },
+    /* === GARDEN === */
+    comida: {
+      caloroso: "Fico feliz demais que nossos pratos agradaram seu paladar!",
+      profissional: "É gratificante saber que nossa proposta gastronômica atendeu às suas expectativas.",
+      descontraido: "Que bom que a comida conquistou — nosso chef vai adorar saber!"
+    },
+    cafe: {
+      caloroso: "Ficamos contentes que o nosso café fez parte de um bom momento!",
+      profissional: "Selecionamos cada detalhe das nossas bebidas pensando na melhor experiência.",
+      descontraido: "Café bom é café que marca — que bom que o nosso foi assim!"
+    },
+    doce: {
+      caloroso: "Que delícia saber que nossas sobremesas fizeram sucesso!",
+      profissional: "Nossas sobremesas são preparadas com ingredientes selecionados para garantir a melhor experiência.",
+      descontraido: "Sobremesa boa é obrigação aqui no Garden — fico feliz que você curtiu!"
+    },
+    ambiente: {
+      caloroso: "Que bom que nosso espaço proporcionou um momento agradável!",
+      profissional: "Cuidamos de cada detalhe do ambiente pensando no conforto dos nossos clientes.",
+      descontraido: "O cantinho é especial mesmo — que bom que você sentiu isso!"
+    },
+    experiencia: {
+      caloroso: "Saber que a experiência foi marcante é o melhor retorno que podemos receber!",
+      profissional: "Trabalhamos para que cada visita ao Garden seja uma experiência completa e memorável.",
+      descontraido: "Esse é o tipo de feedback que faz nosso dia — obrigado!"
+    },
+    demora: {
+      caloroso: "Valorizamos cada feedback e estamos trabalhando para otimizar nossos tempos.",
+      profissional: "Tomamos nota do seu retorno sobre o tempo de espera e já estamos trabalhando em melhorias.",
+      descontraido: "Anotamos o ponto sobre a espera — tamos de olho pra melhorar!"
+    }
+  };
+
+  var entry = MAP[t];
+  if (entry) {
+    phrases.caloroso = entry.caloroso;
+    phrases.profissional = entry.profissional;
+    phrases.descontraido = entry.descontraido;
+  } else {
+    phrases.caloroso = "Ficamos muito felizes com o seu retorno!";
+    phrases.profissional = "Valorizamos cada feedback dos nossos clientes.";
+    phrases.descontraido = "Demais receber esse feedback — valeu!";
+  }
+
+  /* Adiciona um segundo tema quando houver */
+  if (topics.length > 1) {
+    var t2 = topics[1];
+    var e2 = MAP[t2];
+    if (e2) {
+      phrases.caloroso += " " + e2.caloroso;
+      phrases.profissional += " " + e2.profissional;
+    }
+  }
+
+  return phrases;
+}
+
+
+/* ============================
+   DOM & INTERAÇÃO
+   ============================ */
+var currentBrand = "imoveis";
+
+var el = {
+  tabs: document.querySelectorAll(".tab"),
+  brandInfo: document.getElementById("brandInfo"),
+  review: document.getElementById("review"),
+  reviewer: document.getElementById("reviewer"),
+  stars: document.getElementById("stars"),
+  go: document.getElementById("go"),
+  sentiment: document.getElementById("sentiment"),
+  negNote: document.getElementById("negNote"),
+  cards: document.getElementById("cards"),
+  err: document.getElementById("err")
+};
+
+function renderBrandInfo() {
+  var b = BRANDS[currentBrand];
+  el.brandInfo.innerHTML =
+    "<strong>" + b.nome + "</strong> · Instagram: " + b.instagram +
+    " · Site: " + b.site;
+}
+renderBrandInfo();
+
+el.tabs.forEach(function(tab) {
+  tab.addEventListener("click", function() {
+    el.tabs.forEach(function(t) {
+      t.classList.remove("active");
+      t.setAttribute("aria-selected", "false");
+    });
+    tab.classList.add("active");
+    tab.setAttribute("aria-selected", "true");
+    currentBrand = tab.getAttribute("data-brand");
+    renderBrandInfo();
+    clearResults();
+  });
+});
+
+function clearResults() {
+  el.cards.innerHTML = "";
+  el.sentiment.className = "sentiment";
+  el.negNote.classList.remove("show");
+  el.err.classList.remove("show");
+}
+
+function escapeHtml(s) {
+  return String(s)
+    .replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;").replace(/'/g, "&#39;");
+}
+
+function fallbackCopy(text) {
+  var ta = document.createElement("textarea");
+  ta.value = text;
+  ta.style.position = "fixed";
+  ta.style.opacity = "0";
+  document.body.appendChild(ta);
+  ta.focus();
+  ta.select();
+  try { document.execCommand("copy"); } catch (e) {}
+  document.body.removeChild(ta);
+}
+
+function renderCards(responses, sentiment) {
+  var s = sentiment;
+  el.sentiment.textContent = "Sentimento: " + s;
+  el.sentiment.className = "sentiment show " + s;
+  if (s === "negativo") el.negNote.classList.add("show");
+
+  el.cards.innerHTML = "";
+  responses.forEach(function(r, i) {
+    var card = document.createElement("div");
+    card.className = "card";
+    card.innerHTML =
+      '<div class="card-head">' +
+        '<span class="tone">Sugestão ' + (i + 1) + ' · ' + escapeHtml(r.tom) + '</span>' +
+        '<span style="display:flex;gap:6px">' +
+          '<button class="edit-toggle" type="button">Editar</button>' +
+          '<button class="copy" type="button">Copiar</button>' +
+        '</span>' +
+      '</div>' +
+      '<p>' + escapeHtml(r.texto) + '</p>' +
+      '<textarea class="edit-area">' + escapeHtml(r.texto) + '</textarea>';
+
+    var pEl = card.querySelector("p");
+    var editArea = card.querySelector(".edit-area");
+    var editBtn = card.querySelector(".edit-toggle");
+    var copyBtn = card.querySelector(".copy");
+
+    var editing = false;
+    editBtn.addEventListener("click", function() {
+      editing = !editing;
+      if (editing) {
+        editArea.style.display = "block";
+        pEl.style.display = "none";
+        editBtn.textContent = "Salvar";
+        editArea.focus();
+      } else {
+        r.texto = editArea.value;
+        pEl.textContent = r.texto;
+        editArea.style.display = "none";
+        pEl.style.display = "block";
+        editBtn.textContent = "Editar";
+      }
+    });
+
+    copyBtn.addEventListener("click", function() {
+      var texto = editing ? editArea.value : r.texto;
+      function done() {
+        copyBtn.textContent = "Copiado ✓";
+        copyBtn.classList.add("done");
+        setTimeout(function() {
+          copyBtn.textContent = "Copiar";
+          copyBtn.classList.remove("done");
+        }, 2000);
+      }
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(texto).then(done).catch(function() { fallbackCopy(texto); done(); });
+      } else {
+        fallbackCopy(texto); done();
+      }
+    });
+
+    el.cards.appendChild(card);
+  });
+}
+
+el.go.addEventListener("click", function() {
+  var review = el.review.value.trim();
+  clearResults();
+
+  if (!review) {
+    el.err.textContent = "Cole o texto da avaliação antes de gerar as respostas.";
+    el.err.classList.add("show");
+    return;
+  }
+
+  var sentiment = detectSentiment(review, el.stars.value.trim());
+  var topics = detectTopics(review, currentBrand);
+  var reviewer = el.reviewer.value.trim();
+
+  var responses = buildResponses(currentBrand, sentiment, topics, reviewer);
+  renderCards(responses, sentiment);
+
+  /* Scroll suave até o resultado */
+  el.sentiment.scrollIntoView({ behavior: "smooth", block: "start" });
+});
+
+})();
+</script>
+</body>
+</html>
